@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: source_commcare
+    schema: staging_new
+    tables:
+      - name: sb_follow_up
+        identifier: SB_follow_up
+        description: "commcare table"
+
+      - name: social_benefits
+        identifier: Social_Benefits__SB_
+        description: "commcare table"
+      
