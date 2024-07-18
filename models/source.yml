@@ -12,3 +12,16 @@ sources:
         identifier: Social_Benefits__SB_
         description: "commcare table"
       
+      - name: raw_case 
+        identifier: zzz_case 
+        description: "ccc"
+
+      - name: cmd_registrations
+        identifier: Register_new_end_user
+        description: "registrations"
+
+      - name: cmd_session_4
+        identifier: CMD_Session_4
+        description: "registrations"
+      
+      
