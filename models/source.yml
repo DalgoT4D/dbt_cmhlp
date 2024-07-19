@@ -23,5 +23,7 @@ sources:
       - name: cmd_session_4
         identifier: CMD_Session_4
         description: "registrations"
-      
-      
+
+      - name: beneficiary_registration
+        identifier: Register_new_end_user
+        description: "commcare table"
