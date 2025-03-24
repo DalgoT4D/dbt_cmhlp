@@ -43,31 +43,23 @@ jobs:
           echo "profiles.yml created successfully."
           ls -al /home/runner/.dbt
 
-      # - name: Check warehouse connection
-      #   run: dbt debug
+      - name: Check warehouse connection
+        run: dbt debug
 
       - name: Install dbt dependencies
         run: dbt deps
 
-      # - name: dbt build
-      #   run: dbt build --full-refresh
-      #   env:
-      #     POSTGRES_DBNAME: ${{ secrets.POSTGRES_DBNAME }}
-      #     POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      #     POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      #     POSTGRES_HOST: 127.0.0.1
-      #     DBT_PROFILES_DIR: /home/runner/.dbt
-
-      - name: Benchmarking models
-        run: sqlfluff lint models --bench
+      - name: dbt build
+        run: dbt build --full-refresh
         env:
           POSTGRES_DBNAME: ${{ secrets.POSTGRES_DBNAME }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_HOST: 127.0.0.1
+          DBT_PROFILES_DIR: /home/runner/.dbt
 
       - name: Lint models
-        run: sqlfluff lint models -f human
+        run: sqlfluff lint models --bench -f human
         env:
           POSTGRES_DBNAME: ${{ secrets.POSTGRES_DBNAME }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}

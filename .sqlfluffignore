@@ -3,3 +3,6 @@ dbt_packages/
 
 analysis/
 macros/
+
+*.yml
+*.yaml
