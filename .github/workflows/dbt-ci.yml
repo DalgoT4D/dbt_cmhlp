@@ -46,8 +46,8 @@ jobs:
       # - name: Check warehouse connection
       #   run: dbt debug
 
-      # - name: Install dbt dependencies
-      #   run: dbt deps
+      - name: Install dbt dependencies
+        run: dbt deps
 
       # - name: dbt build
       #   run: dbt build --full-refresh
