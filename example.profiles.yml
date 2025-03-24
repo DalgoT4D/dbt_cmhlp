@@ -1,0 +1,22 @@
+cmhlp:
+  outputs:
+      dev:
+          type: postgres
+          host: <db host>
+          user: <db user>
+          password: <password>
+          port: 5432
+          dbname: <db name>
+          schema: dev
+          threads: 4
+      prod:
+          type: postgres
+          host: <db host>
+          user: <db user>
+          password: <password>
+          port: 5432
+          dbname: <db name>
+          schema: intermediate
+          threads: 4
+  target: dev
+
