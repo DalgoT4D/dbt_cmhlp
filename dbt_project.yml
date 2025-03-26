@@ -36,3 +36,6 @@ models:
     ## elementary models will be created in the schema '<your_schema>_elementary'
     schema: "elementary"
   +materialized: table
+
+flags: 
+  require_explicit_package_overrides_for_builtin_materializations: false
