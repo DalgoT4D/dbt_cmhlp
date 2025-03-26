@@ -12,15 +12,25 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set Up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10.12'
 
       - name: Install requirements
         run: pip install -r requirements.txt  
+
+      - name: Open SSH Tunnel
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVERIP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Create profiles.yml
         run: |
@@ -30,14 +40,14 @@ jobs:
           cmhlp:
             outputs:
               dev:
-                dbname: "{{ env_var('POSTGRES_DBNAME') }}"
-                host: "{{ env_var('POSTGRES_HOST') }}"
-                password: "{{ env_var('POSTGRES_PASSWORD') }}"
+                type: postgres
+                dbname: ${{ secrets.POSTGRES_DBNAME }}
+                host: 127.0.0.1
+                password: ${{ secrets.POSTGRES_PASSWORD }}
                 port: 5432
                 schema: dev
-                threads: 8
-                type: postgres
-                user: "{{ env_var('POSTGRES_USER') }}"
+                threads: 4
+                user: ${{ secrets.POSTGRES_USER }}
             target: dev
           EOF
           echo "profiles.yml created successfully."
