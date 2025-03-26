@@ -20,7 +20,10 @@ jobs:
           python-version: '3.10.12'
 
       - name: Install requirements
-        run: pip install -r requirements.txt  
+        run: pip install -r requirements.txt
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
 
       - name: Open SSH Tunnel
         uses: appleboy/ssh-action@v1.2.0
