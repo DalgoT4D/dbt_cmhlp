@@ -22,19 +22,6 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
 
-      - name: Run pre-commit
-        run: pre-commit run --all-files
-
-      - name: Open SSH Tunnel
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SERVERIP }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
-
       - name: Create profiles.yml
         run: |
           mkdir -p /home/runner/.dbt
@@ -55,6 +42,19 @@ jobs:
           EOF
           echo "profiles.yml created successfully."
           ls -al /home/runner/.dbt
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+
+      - name: Open SSH Tunnel
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVERIP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Check warehouse connection
         run: dbt debug
