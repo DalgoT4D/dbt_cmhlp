@@ -32,7 +32,7 @@ jobs:
               dev:
                 type: postgres
                 dbname: ${{ secrets.POSTGRES_DBNAME }}
-                host: ${{ secrets.POSTGRES_HOST }}
+                host: 127.0.0.1
                 password: ${{ secrets.POSTGRES_PASSWORD }}
                 port: 5432
                 schema: dev
@@ -67,16 +67,9 @@ jobs:
       - name: dbt build
         run: dbt build --full-refresh
         env:
-          POSTGRES_DBNAME: ${{ secrets.POSTGRES_DBNAME }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           DBT_PROFILES_DIR: /home/runner/.dbt
 
       - name: Lint models
         run: sqlfluff lint models --bench -f human
         env:
-          POSTGRES_DBNAME: ${{ secrets.POSTGRES_DBNAME }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          DBT_PROFILES_DIR: /home/runner/.dbt
