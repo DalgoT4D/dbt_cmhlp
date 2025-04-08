@@ -54,6 +54,7 @@ jobs:
           script: |
             echo "Creating SSH tunnel..."
             ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 -f ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }} &
+            dbt debug
 
       - name: Check warehouse connection
         run: dbt debug
