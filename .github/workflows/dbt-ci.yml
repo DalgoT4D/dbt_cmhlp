@@ -49,6 +49,7 @@ jobs:
           host: ${{ secrets.SERVERIP }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 500s
           port: 22
           script: |
             ssh -N -f 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
