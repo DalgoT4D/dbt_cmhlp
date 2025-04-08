@@ -51,7 +51,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
+            ssh -N -f 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Check warehouse connection
         run: dbt debug
