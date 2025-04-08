@@ -32,7 +32,7 @@ jobs:
               dev:
                 type: postgres
                 dbname: ${{ secrets.POSTGRES_DBNAME }}
-                host: 127.0.0.1
+                host: localhost
                 password: ${{ secrets.POSTGRES_PASSWORD }}
                 port: 5432
                 schema: dev
