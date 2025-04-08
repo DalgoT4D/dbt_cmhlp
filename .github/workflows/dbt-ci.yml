@@ -52,7 +52,7 @@ jobs:
           command_timeout: 500s
           port: 22
           script: |
-            echo "Creating SSH tunnel...""
+            echo "Creating SSH tunnel..."
             ssh -N -f 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Check warehouse connection
