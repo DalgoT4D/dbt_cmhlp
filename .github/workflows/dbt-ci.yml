@@ -19,29 +19,29 @@ jobs:
         with:
           python-version: '3.10.12'
 
-      # - name: Install requirements
-      #   run: pip install -r requirements.txt
+      - name: Install requirements
+        run: pip install -r requirements.txt
 
-      # - name: Create profiles.yml
-      #   run: |
-      #     mkdir -p /home/runner/.dbt
-      #     echo "Creating profiles.yml..."
-      #     cat <<EOF > /home/runner/.dbt/profiles.yml
-      #     cmhlp:
-      #       outputs:
-      #         dev:
-      #           type: postgres
-      #           dbname: ${{ secrets.POSTGRES_DBNAME }}
-      #           host: 127.0.0.1
-      #           password: ${{ secrets.POSTGRES_PASSWORD }}
-      #           port: 5432
-      #           schema: dev
-      #           threads: 4
-      #           user: ${{ secrets.POSTGRES_USER }}
-      #       target: dev
-      #     EOF
-      #     echo "profiles.yml created successfully."
-      #     ls -al /home/runner/.dbt
+      - name: Create profiles.yml
+        run: |
+          mkdir -p /home/runner/.dbt
+          echo "Creating profiles.yml..."
+          cat <<EOF > /home/runner/.dbt/profiles.yml
+          cmhlp:
+            outputs:
+              dev:
+                type: postgres
+                dbname: ${{ secrets.POSTGRES_DBNAME }}
+                host: 127.0.0.1
+                password: ${{ secrets.POSTGRES_PASSWORD }}
+                port: 5432
+                schema: dev
+                threads: 4
+                user: ${{ secrets.POSTGRES_USER }}
+            target: dev
+          EOF
+          echo "profiles.yml created successfully."
+          ls -al /home/runner/.dbt
 
       - name: Open SSH Tunnel
         uses: appleboy/ssh-action@v1.2.0
@@ -53,7 +53,6 @@ jobs:
           port: 22
           script: |
             echo "Creating SSH tunnel..."
-            ssh -N -f 5432:${{ secrets.POSTGRES_HOST }}:5432 ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Check warehouse connection
         run: dbt debug
