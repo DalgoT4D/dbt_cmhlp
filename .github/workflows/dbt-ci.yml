@@ -68,7 +68,7 @@ jobs:
       # Step 4: Debug SSH connection
       - name: Debug SSH connection
         run: |
-          ssh -i ~/.ssh/ddp -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_SERVERIPHOST }} 
+          ssh -i ~/.ssh/ddp -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_SERVERIP }} 
           echo "SSH connection successful"
 
       # Step 5: Establish SSH tunnel
