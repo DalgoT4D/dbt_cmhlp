@@ -43,18 +43,41 @@ jobs:
           echo "profiles.yml created successfully."
           ls -al /home/runner/.dbt
 
-      - name: Open SSH Tunnel
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SERVERIP }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          command_timeout: 500s
-          port: 22
-          script: |
-            echo "Creating SSH tunnel..."
-            ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 -f ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }} &
-            dbt debug
+      # - name: Open SSH Tunnel
+      #   uses: appleboy/ssh-action@v1.2.0
+      #   with:
+      #     host: ${{ secrets.SERVERIP }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     command_timeout: 500s
+      #     port: 22
+      #     script: |
+      #       echo "Creating SSH tunnel..."
+      #       ssh -N -L 5432:${{ secrets.POSTGRES_HOST }}:5432 -f ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }} &
+      #       dbt debug
+
+      - name: Add SSH private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/ddp
+          chmod 600 ~/.ssh/ddp
+
+      - name: Add remote host to known_hosts
+        run: ssh-keyscan -H ${{ secrets.SERVERIP }} >> ~/.ssh/known_hosts
+
+      # Step 4: Debug SSH connection
+      - name: Debug SSH connection
+        run: |
+          ssh -i ~/.ssh/ddp -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_SERVERIPHOST }} 
+          echo "SSH connection successful"
+
+      # Step 5: Establish SSH tunnel
+      - name: Establish SSH tunnel
+        run: |
+          ssh -fN \
+            -L 5432:${{ secrets.POSTGRES_HOST }}:5432 \
+            -i ~/.ssh/ddp \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVERIP }}
 
       - name: Check warehouse connection
         run: dbt debug
