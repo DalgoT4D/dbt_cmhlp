@@ -48,6 +48,13 @@ WITH base_data AS (
         COALESCE(
             NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'population_of_the_village_VMS', ''), '0'
         )::integer AS total_population,
+        COALESCE(
+            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'no_of_anganwadi_workers_VMS', ''), '0'
+        )::integer AS anganwadi_worker_population,
+        COALESCE(
+            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'no_of_asha_workers_VMS', ''), '0'
+        )::integer AS asha_worker_population,
+        -- community health workers
         data::json -> 'form' -> 'case' -> 'create' ->> 'case_type' AS case_type,
         data::json -> 'form' -> 'case' -> 'create' ->> 'case_name' AS village_name,
         -- total
@@ -120,6 +127,26 @@ gender_slices AS (
     {% endfor %}
 ),
 
+-- Community healthy worker slices
+{% set workers = ['asha_worker', 'anganwadi_worker'] %}
+
+community_health_worker_slices AS (
+    {% for worker in workers %}
+        SELECT
+            district_name,
+            village_name,
+            case_type,
+            community_facilitator_name,
+            'community_health_worker' AS slice,
+            '{{ worker }}' AS category,
+            {{ worker }}_population AS population
+        FROM base_data
+        {% if not loop.last -%}
+            UNION ALL
+        {%- endif %}
+    {% endfor %}
+),
+
 -- Generic slices
 generic_slices AS (
     SELECT
@@ -144,3 +171,6 @@ FROM gender_slices
 UNION ALL
 SELECT *
 FROM generic_slices
+UNION ALL
+SELECT *
+FROM community_health_worker_slices
