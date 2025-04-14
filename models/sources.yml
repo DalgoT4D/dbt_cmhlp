@@ -1,0 +1,26 @@
+version: 2
+sources:
+- name: mehsana
+  schema: staging_mehsana
+  tables:
+    - name: Village_Mapping_Survey_Form
+      identifier: Village_Mapping_Survey_Form
+      description: 
+        This table contains the survey data collected from the villages in Mehsana district of Gujarat. \
+        It includes the total count across various demographics like religion, caste, gender, etc.
+- name: patan
+  schema: staging_patan
+  tables:
+    - name: Village_Mapping_Survey_Form
+      identifier: Village_Mapping_Survey_Form
+      description: 
+        This table contains the survey data collected from the villages in Patan district of Gujarat. \
+        It includes the total count across various demographics like religion, caste, gender, etc.
+- name: sabarkantha
+  schema: staging_sabarkantha
+  tables:
+    - name: Village_Mapping_Survey_Form
+      identifier: Village_Mapping_Survey_Form
+      description: 
+        This table contains the survey data collected from the villages in Sabarkantha district of Gujarat. \
+        It includes the total count across various demographics like religion, caste, gender, etc.

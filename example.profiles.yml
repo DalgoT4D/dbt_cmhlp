@@ -16,7 +16,7 @@ cmhlp:
           password: <password>
           port: 5432
           dbname: <db name>
-          schema: intermediate
+          schema: prod
           threads: 4
   target: dev
 

@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: village_population_counts
+    description: Extracting counts of various demographics (relgion, cast, gender) in any village
+    columns:
+      - name: village_name
+        description: Name of the village
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null

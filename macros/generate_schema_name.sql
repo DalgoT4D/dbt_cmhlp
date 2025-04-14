@@ -3,13 +3,14 @@
 
     {%- if custom_schema_name is none -%}
 
-        {% if 'staging' in node.fqn and node.fqn.index('staging') + 1 < node.fqn | length %}
-            {% set prefix = node.fqn[node.fqn.index('staging')] %}
-            intermediate_{{ prefix | trim }}
-
-        {# Fallback to default schema if no specific case matches #}
+        {# Concat the subfolder(s) name to only #}
+        {% set prefix = node.fqn [1:-1] | join('_') %}
+        
+        {# Staging models can be same for prod or dev profiles/target schema #}
+        {% if 'prod' in default_schema or 'staging' in node.fqn  %}
+            {{ prefix | trim }}
         {% else %}
-            {{ default_schema }}
+            {{ default_schema }}_{{ prefix | trim }}
         {% endif %}
 
     {%- else -%}
