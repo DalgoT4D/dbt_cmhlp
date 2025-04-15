@@ -8,6 +8,7 @@ models:
         description: Name of the village
         data_tests:
           - not_null
+          - dbt_utils.not_empty_string
       - name: case_type
         description: Commcare case type
         data_tests:
@@ -22,3 +23,7 @@ models:
               - total
               - gender
               - community_health_worker
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null

@@ -1,70 +1,7 @@
-WITH base_data AS (
-    SELECT
-        district_name,
-        -- a case is created before any forms are submitted for it
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'hindu_VMS', ''), '0'
-        )::integer AS hindu_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'muslim_VMS', ''), '0'
-        )::integer AS muslim_population,
-
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'sikh_religion_VMS', ''), '0'
-        )::integer AS sikh_population,
-        -- religion
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'jain_religion_VMS', ''), '0'
-        )::integer AS jain_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'christian_religion_VMS', ''), '0'
-        )::integer AS christian_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'buddhist_religion_VMS', ''), '0'
-        )::integer AS buddhist_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'men_in_the_village_VMS', ''), '0'
-        )::integer AS men_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'women_in_the_village_VMS', ''), '0'
-        )::integer AS women_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'transgender_in_the_village_VMS', ''), '0'
-        )::integer AS transgender_population,
-        -- gender
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'general_VMS', ''), '0'
-        )::integer AS general_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'sc_st_VMS', ''), '0'
-        )::integer AS sc_st_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'obc_sbc_VMS', ''), '0'
-        )::integer AS obc_sbc_population,
-        -- caste
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'vj_nt_VMS', ''), '0'
-        )::integer AS vj_nt_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'population_of_the_village_VMS', ''), '0'
-        )::integer AS total_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'no_of_anganwadi_workers_VMS', ''), '0'
-        )::integer AS anganwadi_worker_population,
-        COALESCE(
-            NULLIF(data::json -> 'form' -> 'case' -> 'update' ->> 'no_of_asha_workers_VMS', ''), '0'
-        )::integer AS asha_worker_population,
-        -- community health workers
-        data::json -> 'form' -> 'case' -> 'create' ->> 'case_type' AS case_type,
-        data::json -> 'form' -> 'case' -> 'create' ->> 'case_name' AS village_name,
-        -- total
-        data::json
-        -> 'form'
-        -> 'case'
-        -> 'update'
-        ->> 'community_facilitator_cf_name_VMS' AS community_facilitator_name
-    FROM
-        {{ ref('village_mapping_survey_form_merged') }}
+WITH village_data AS (
+    SELECT *
+    FROM {{ ref('village_case_data') }}
+    WHERE village_name IS NOT null AND TRIM(village_name) != ''
 ),
 
 -- Religion slices
@@ -79,8 +16,10 @@ religion_slices AS (
             community_facilitator_name,
             'religion' AS slice,
             '{{ religion }}' AS category,
-            {{ religion }}_population AS population
-        FROM base_data
+            {{ religion }}_population AS population,
+            indexed_on,
+            case_id
+        FROM village_data
         {% if not loop.last -%}
             UNION ALL
         {%- endif %}
@@ -99,8 +38,10 @@ caste_slices AS (
             community_facilitator_name,
             'caste' AS slice,
             '{{ caste }}' AS category,
-            {{ caste }}_population AS population
-        FROM base_data
+            {{ caste }}_population AS population,
+            indexed_on,
+            case_id
+        FROM village_data
         {% if not loop.last -%}
             UNION ALL
         {%- endif %}
@@ -119,8 +60,10 @@ gender_slices AS (
             community_facilitator_name,
             'gender' AS slice,
             '{{ gender }}' AS category,
-            {{ gender }}_population AS population
-        FROM base_data
+            {{ gender }}_population AS population,
+            indexed_on,
+            case_id
+        FROM village_data
         {% if not loop.last -%}
             UNION ALL
         {%- endif %}
@@ -139,8 +82,10 @@ community_health_worker_slices AS (
             community_facilitator_name,
             'community_health_worker' AS slice,
             '{{ worker }}' AS category,
-            {{ worker }}_population AS population
-        FROM base_data
+            {{ worker }}_population AS population,
+            indexed_on,
+            case_id
+        FROM village_data
         {% if not loop.last -%}
             UNION ALL
         {%- endif %}
@@ -156,8 +101,10 @@ generic_slices AS (
         community_facilitator_name,
         'total' AS slice,
         'total' AS category,
-        total_population AS population
-    FROM base_data
+        total_population AS population,
+        indexed_on,
+        case_id
+    FROM village_data
 )
 
 SELECT *

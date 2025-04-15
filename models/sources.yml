@@ -8,6 +8,11 @@ sources:
       description: 
         This table contains the survey data collected from the villages in Mehsana district of Gujarat. \
         It includes the total count across various demographics like religion, caste, gender, etc.
+    - name: zzz_case
+      identifier: zzz_case
+      description: 
+        This table contains the data of all cases in the CommCare application. Each update to a case \
+        is recorded as a new entry and the latest entry is the most recent update
 - name: patan
   schema: staging_patan
   tables:
@@ -16,6 +21,11 @@ sources:
       description: 
         This table contains the survey data collected from the villages in Patan district of Gujarat. \
         It includes the total count across various demographics like religion, caste, gender, etc.
+    - name: zzz_case
+      identifier: zzz_case
+      description: 
+        This table contains the data of all cases in the CommCare application. Each update to a case \
+        is recorded as a new entry and the latest entry is the most recent update
 - name: sabarkantha
   schema: staging_sabarkantha
   tables:
@@ -24,3 +34,8 @@ sources:
       description: 
         This table contains the survey data collected from the villages in Sabarkantha district of Gujarat. \
         It includes the total count across various demographics like religion, caste, gender, etc.
+    - name: zzz_case
+      identifier: zzz_case
+      description: 
+        This table contains the data of all cases in the CommCare application. Each update to a case \
+        is recorded as a new entry and the latest entry is the most recent update

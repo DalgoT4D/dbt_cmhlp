@@ -6,7 +6,7 @@
     FROM
         {{ source(
             district_name,
-            'Village_Mapping_Survey_Form'
+            'zzz_case'
         ) }}
 
     {% if not loop.last -%}
