@@ -3,39 +3,42 @@ sources:
 - name: mehsana
   schema: staging_mehsana
   tables:
-    - name: Village_Mapping_Survey_Form
-      identifier: Village_Mapping_Survey_Form
-      description: 
-        This table contains the survey data collected from the villages in Mehsana district of Gujarat. \
-        It includes the total count across various demographics like religion, caste, gender, etc.
     - name: zzz_case
       identifier: zzz_case
       description: 
         This table contains the data of all cases in the CommCare application. Each update to a case \
         is recorded as a new entry and the latest entry is the most recent update
+    - name: champion_training_form
+      identifier: Champion_Training_Details__CHT_
+      description: This table contains the details of the training sessions attended by the champions
+    - name: refresher_champion_training_form
+      identifier: Refresher_Training_Details
+      description: This is form to capture the details of the refresher training sessions attended by the champions
 - name: patan
   schema: staging_patan
   tables:
-    - name: Village_Mapping_Survey_Form
-      identifier: Village_Mapping_Survey_Form
-      description: 
-        This table contains the survey data collected from the villages in Patan district of Gujarat. \
-        It includes the total count across various demographics like religion, caste, gender, etc.
     - name: zzz_case
       identifier: zzz_case
       description: 
         This table contains the data of all cases in the CommCare application. Each update to a case \
         is recorded as a new entry and the latest entry is the most recent update
+    - name: champion_training_form
+      identifier: Champion_Training_Details__CHT_
+      description: This table contains the details of the training sessions attended by the champions
+    - name: refresher_champion_training_form
+      identifier: Refresher_Training_Details
+      description: This is form to capture the details of the refresher training sessions attended by the champions
 - name: sabarkantha
   schema: staging_sabarkantha
   tables:
-    - name: Village_Mapping_Survey_Form
-      identifier: Village_Mapping_Survey_Form
-      description: 
-        This table contains the survey data collected from the villages in Sabarkantha district of Gujarat. \
-        It includes the total count across various demographics like religion, caste, gender, etc.
     - name: zzz_case
       identifier: zzz_case
       description: 
         This table contains the data of all cases in the CommCare application. Each update to a case \
         is recorded as a new entry and the latest entry is the most recent update
+    - name: champion_training_form
+      identifier: Champion_Training_Details__CHT_
+      description: This table contains the details of the training sessions attended by the champions
+    - name: refresher_champion_training_form
+      identifier: Refresher_Training_Details
+      description: This is form to capture the details of the refresher training sessions attended by the champions
