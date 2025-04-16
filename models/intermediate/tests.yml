@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: community_facilitator_case_data
+    description: Case data of community facilitators
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - community_facilitator
+      - name: religion
+        description: Religion of the community facilitator
+        data_tests:
+          - accepted_values:
+              values:
+              - hindu
+              - muslim
+              - christian
+              - sikh
+              - jain
+              - buddhist
+              - prefer_not_to_say
+      - name: caste
+        description: Caste of the community facilitator
+        data_tests:
+          - accepted_values:
+              values:
+              - general
+              - scst
+              - obc_sbc
+              - vj_nt
+              - prefer_not_to_say
+      - name: physically_disabled
+        description: Is the community facilitator physically disabled
+        data_tests:
+          - accepted_values:
+              values:
+              - "no"
+              - "yes"
