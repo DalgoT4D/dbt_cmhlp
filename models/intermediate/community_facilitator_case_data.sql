@@ -5,7 +5,7 @@ WITH cte AS (
         district_name,
         indexed_on,
         COALESCE(NULLIF(data -> 'properties' ->> 'cf_age', ''), null)::INTEGER AS age,
-        data ->> 'case_id',
+        data ->> 'case_id' AS case_id,
         data -> 'properties' ->> 'case_name' AS name,
         data -> 'properties' ->> 'case_type' AS case_type,
         data -> 'properties' ->> 'cf_caste_CFR' AS caste,
@@ -36,4 +36,14 @@ deduplicated_cte AS (
   }}
 )
 
-SELECT * FROM deduplicated_cte
+SELECT
+    *,
+    CASE
+        WHEN age < 19 THEN 'Below 19'
+        WHEN age BETWEEN 19 AND 23 THEN '19-23'
+        WHEN age BETWEEN 24 AND 25 THEN '24-25'
+        WHEN age BETWEEN 26 AND 30 THEN '26-30'
+        WHEN age BETWEEN 31 AND 35 THEN '31-35'
+        WHEN age > 35 THEN 'Above 36'
+    END AS age_group
+FROM deduplicated_cte
