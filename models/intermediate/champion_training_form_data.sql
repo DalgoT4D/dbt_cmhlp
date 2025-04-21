@@ -11,13 +11,13 @@ SELECT
         null
     )::INTEGER AS no_of_champions_invited,
     COALESCE(
-        NULLIF(data -> 'form' -> 'champion_training_details' ->> 'no_of_obc_champions_attended_the_training_CHT', ''),
-        null
-    )::INTEGER AS no_of_obc_champions_attended,
-    COALESCE(
         NULLIF(data -> 'form' -> 'champion_training_details' ->> 'no_of_champions_who_completed_the_training_CHT', ''),
         null
     )::INTEGER AS no_of_champions_completed,
+    COALESCE(
+        NULLIF(data -> 'form' -> 'champion_training_details' ->> 'no_of_obc_champions_attended_the_training_CHT', ''),
+        null
+    )::INTEGER AS no_of_obc_champions_attended,
     COALESCE(
         NULLIF(data -> 'form' -> 'champion_training_details' ->> 'no_of_male_champions_attended_the_training_CHT', ''),
         null

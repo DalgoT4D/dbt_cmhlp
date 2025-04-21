@@ -27,3 +27,16 @@ models:
         description: Unique identifier for the case
         data_tests:
           - not_null
+  - name: champion_training_wide
+    description: This computes the count of champions trained across caste, gender, villages & phcs 
+    columns:
+      - name: slice
+        description: Slice through which we want to count the population
+        data_tests:
+          - accepted_values:
+              values:
+              - caste
+              - gender
+              - dropout
+              - phcs_covered
+              - villages_covered

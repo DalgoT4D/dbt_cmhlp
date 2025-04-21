@@ -75,6 +75,28 @@ phcs_covered_slice AS (
         'phcs_covered' AS category,
         no_of_phcs_covered AS total_count
     FROM champion_training_data
+),
+
+-- dropout (invited vs attended vs completed)
+{% set categories = ['attended', 'completed', 'invited'] %}
+
+dropout_slices AS (
+    {% for category in categories %}
+        SELECT
+            district_name,
+            community_facilitator_name,
+            training_batch_name,
+            start_date,
+            end_date,
+            place_of_the_training,
+            'dropout' AS slice,
+            '{{ category }}' AS category,
+            no_of_champions_{{ category }} AS total_count
+        FROM champion_training_data
+        {% if not loop.last -%}
+            UNION ALL
+        {%- endif %}
+    {% endfor %}
 )
 
 SELECT * FROM gender_slices
@@ -84,3 +106,5 @@ UNION ALL
 SELECT * FROM villages_covered_slice
 UNION ALL
 SELECT * FROM phcs_covered_slice
+UNION ALL
+SELECT * FROM dropout_slices
