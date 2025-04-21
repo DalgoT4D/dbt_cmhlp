@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: village_population_counts
+  - name: village_population_wide
     description: Extracting counts of various demographics (relgion, cast, gender) in any village
     columns:
       - name: village_name
