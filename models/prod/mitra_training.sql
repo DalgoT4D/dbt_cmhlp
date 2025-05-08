@@ -1,22 +1,25 @@
+-- Mitra registration only happens after training. So we can assume the 
+-- data extracted below is of trained mitras
+
 SELECT
     district_name,
-    COALESCE(
-        NULLIF(data -> 'properties' ->> 'number_of_mitras_that_completed_the_training_CFDW', ''), null
-    )::INTEGER AS mitras_trained,
-    COALESCE(
-        NULLIF(
-            data -> 'properties' ->> 'has_any_of_their_mitras_dropped_out_of_atmiyata_if_yes_please_enter_the_num_CFDW',
-            ''
-        ),
-        null
-    )::INTEGER AS mitras_dropped,
-    COALESCE(
-        NULLIF(data -> 'properties' ->> 'how_much_time_spent_for_this_work_mitra_training', ''), null
-    )::INTEGER AS time_spent_in_minutes,
-    case_id,
-    case_type,
-    data -> 'properties' ->> 'cf_name_CFDW' AS community_facilitator_name,
-    data -> 'properties' ->> 'work_done_on_this_day_CFDW' AS work_done_on_this_day,
-    TO_DATE(data -> 'properties' ->> 'date_of_the_mitra_training_CFDW', 'YYYY-MM-DD') AS training_date
-FROM {{ ref('community_facilitator_daily_work_case_data') }}
-WHERE data -> 'properties' ->> 'work_done_on_this_day_CFDW' = 'mitra_training'
+    indexed_on,
+    data ->> 'case_id' AS case_id,
+    data -> 'properties' ->> 'case_name' AS case_name,
+    data -> 'properties' ->> 'case_type' AS case_type,
+    data -> 'properties' ->> 'village_name_mitra' AS village_name,
+    data -> 'properties' ->> 'phc_name_mitra' AS phc_name,
+    data -> 'properties' ->> 'mitra_vaas_name_reg' AS vaas_name,
+    data -> 'properties' ->> 'community_facilitator_cf_name_mitra' AS community_facilitator_name,
+    TO_DATE(data -> 'properties' ->> 'date_of_mitra_training', 'YYYY-MM-DD') AS date_of_training,
+    data -> 'properties' ->> 'mitra_name_reg' AS mitra_name,
+    data -> 'properties' ->> 'mitra_age_reg' AS mitra_age,
+    CASE
+        WHEN data -> 'properties' ->> 'village_name_mitra' IS null THEN 0
+        ELSE
+            LENGTH(TRIM(data -> 'properties' ->> 'village_name_mitra'))
+            - LENGTH(REPLACE(TRIM(data -> 'properties' ->> 'village_name_mitra'), ',', ''))
+            + 1
+    END AS no_of_villages
+FROM {{ ref('raw_case_data') }}
+WHERE data -> 'properties' ->> 'case_type' = 'atmiyata_mitra'

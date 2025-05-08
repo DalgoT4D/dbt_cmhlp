@@ -10,7 +10,7 @@ WITH cte AS (
             null
         )::INTEGER AS age,
         data ->> 'case_id' AS case_id,
-        data -> 'properties' ->> 'case_name' AS name,
+        data -> 'properties' ->> 'case_name' AS case_name,
         data -> 'properties' ->> 'case_type' AS case_type,
         data -> 'properties' ->> 'cf_caste_CFR' AS caste,
         data -> 'properties' ->> 'cf_gender_CFR' AS gender,

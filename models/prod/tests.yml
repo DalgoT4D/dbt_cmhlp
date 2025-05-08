@@ -1,6 +1,25 @@
 version: 2
 
 models:
+  - name: community_facilitator_case_data_prod
+    description: Case data of community facilitators with extra features like age group
+    columns:
+      - name: age
+        description: Age of the community facilitator
+        data_tests:
+          - not_null
+      - name: age_group
+        description: Age group of the community facilitator
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - Below 19
+              - 19-23
+              - 24-25
+              - 26-30
+              - 31-35
+              - Above 36
   - name: village_population_wide
     description: Extracting counts of various demographics (relgion, cast, gender) in any village
     columns:
@@ -40,3 +59,18 @@ models:
               - dropout
               - phcs_covered
               - villages_covered
+  - name: mitra_training
+    description: Data from the mitra registration. All the mitras here are trained
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - atmiyata_mitra
+        
