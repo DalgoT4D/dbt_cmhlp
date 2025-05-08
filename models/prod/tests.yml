@@ -1,7 +1,26 @@
 version: 2
 
 models:
-  - name: village_population_counts
+  - name: community_facilitator_case_data_prod
+    description: Case data of community facilitators with extra features like age group
+    columns:
+      - name: age
+        description: Age of the community facilitator
+        data_tests:
+          - not_null
+      - name: age_group
+        description: Age group of the community facilitator
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - Below 19
+              - 19-23
+              - 24-25
+              - 26-30
+              - 31-35
+              - Above 36
+  - name: village_population_wide
     description: Extracting counts of various demographics (relgion, cast, gender) in any village
     columns:
       - name: village_name
@@ -27,3 +46,31 @@ models:
         description: Unique identifier for the case
         data_tests:
           - not_null
+  - name: champion_training_wide
+    description: This computes the count of champions trained across caste, gender, villages & phcs 
+    columns:
+      - name: slice
+        description: Slice through which we want to count the population
+        data_tests:
+          - accepted_values:
+              values:
+              - caste
+              - gender
+              - dropout
+              - phcs_covered
+              - villages_covered
+  - name: mitra_training
+    description: Data from the mitra registration. All the mitras here are trained
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - atmiyata_mitra
+        

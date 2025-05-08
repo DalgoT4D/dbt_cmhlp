@@ -4,9 +4,13 @@ WITH cte AS (
     SELECT
         district_name,
         indexed_on,
-        COALESCE(NULLIF(data -> 'properties' ->> 'cf_age', ''), null)::INTEGER AS age,
+        COALESCE(
+            NULLIF(data -> 'properties' ->> 'age_of_cf_CFR', ''),
+            NULLIF(data -> 'properties' ->> 'cf_age', ''),
+            null
+        )::INTEGER AS age,
         data ->> 'case_id' AS case_id,
-        data -> 'properties' ->> 'case_name' AS name,
+        data -> 'properties' ->> 'case_name' AS case_name,
         data -> 'properties' ->> 'case_type' AS case_type,
         data -> 'properties' ->> 'cf_caste_CFR' AS caste,
         data -> 'properties' ->> 'cf_gender_CFR' AS gender,
@@ -24,26 +28,13 @@ WITH cte AS (
         {{ ref('raw_case_data') }}
     WHERE
         data -> 'properties' ->> 'case_type' = 'community_facilitator'
-),
-
--- there might updates to case & we might have multiple entries with the same case_id, we want to look at the latest one
-deduplicated_cte AS (
-  {{ dbt_utils.deduplicate(
-      relation='cte',
-      partition_by='case_id',
-      order_by='indexed_on desc',
-     )
-  }}
 )
 
-SELECT
-    *,
-    CASE
-        WHEN age < 19 THEN 'Below 19'
-        WHEN age BETWEEN 19 AND 23 THEN '19-23'
-        WHEN age BETWEEN 24 AND 25 THEN '24-25'
-        WHEN age BETWEEN 26 AND 30 THEN '26-30'
-        WHEN age BETWEEN 31 AND 35 THEN '31-35'
-        WHEN age > 35 THEN 'Above 36'
-    END AS age_group
-FROM deduplicated_cte
+-- there might updates to case & we might have multiple entries with the same case_id, we want to look at the latest one
+{{ 
+    dbt_utils.deduplicate(
+        relation='cte',
+        partition_by='case_id',
+        order_by='indexed_on desc',
+    )
+}}
