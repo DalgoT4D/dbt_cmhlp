@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: all_case_meta_data
+    description: Raw case data with meta information columns pulled out
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+      - name: indexed_on
+        description: Indexed on data. Commcare uses this to push data to the system
+        data_tests:
+          - not_null
+      - name:  district_name
+        description: Name of the district
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+  - name: all_case_deduped
+    description: Deduplicated case data on case_id
+    data_tests: 
+      - dbt_expectations.expect_table_columns_to_contain_set:
+          column_list: ["case_id", "case_type", "owner_id", "indexed_on", "closed", "domain", "user_id", "closed_by", "opened_by", "data"]
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+          - unique
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+      - name: indexed_on
+        description: Indexed on data. Commcare uses this to push data to the system
+        data_tests:
+          - not_null
+      - name:  district_name
+        description: Name of the district
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+    
+      

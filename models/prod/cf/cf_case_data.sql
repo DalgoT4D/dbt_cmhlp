@@ -1,17 +1,16 @@
--- This table contains the registration data of community facilitators
+-- This table contains the case data of community facilitator
+-- Currently we are only pulling the fields related to registration of the community facilitator
+-- Dont worry about the metadata, it is handled in the all_case_deduped model
+
 
 WITH cte AS (
     SELECT
-        district_name,
-        indexed_on,
+        {{ dbt_utils.star(from=ref('all_case_deduped'), except=["data"]) }},
         COALESCE(
             NULLIF(data -> 'properties' ->> 'age_of_cf_CFR', ''),
             NULLIF(data -> 'properties' ->> 'cf_age', ''),
             null
         )::INTEGER AS age,
-        data ->> 'case_id' AS case_id,
-        data -> 'properties' ->> 'case_name' AS case_name,
-        data -> 'properties' ->> 'case_type' AS case_type,
         data -> 'properties' ->> 'cf_caste_CFR' AS caste,
         data -> 'properties' ->> 'cf_gender_CFR' AS gender,
         data -> 'properties' ->> 'cf_religion_CFR' AS religion,
@@ -25,16 +24,19 @@ WITH cte AS (
         data -> 'properties' ->> 'start_date_of_management_training_CFR' AS start_date_of_management_training,
         data -> 'properties' ->> 'material_given_to_cf_from_atmiyata_CFR' AS material_given
     FROM
-        {{ ref('raw_case_data') }}
+        {{ ref('all_case_deduped') }}
     WHERE
         data -> 'properties' ->> 'case_type' = 'community_facilitator'
 )
 
--- there might updates to case & we might have multiple entries with the same case_id, we want to look at the latest one
-{{ 
-    dbt_utils.deduplicate(
-        relation='cte',
-        partition_by='case_id',
-        order_by='indexed_on desc',
-    )
-}}
+SELECT
+    *,
+    CASE
+        WHEN age < 19 THEN 'Below 19'
+        WHEN age BETWEEN 19 AND 23 THEN '19-23'
+        WHEN age BETWEEN 24 AND 25 THEN '24-25'
+        WHEN age BETWEEN 26 AND 30 THEN '26-30'
+        WHEN age BETWEEN 31 AND 35 THEN '31-35'
+        WHEN age > 35 THEN 'Above 36'
+    END AS age_group
+FROM cte

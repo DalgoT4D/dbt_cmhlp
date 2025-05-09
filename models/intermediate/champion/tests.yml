@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: champion_training_form_data
+    description: This model pulls the data of training forms filled by champions
+    columns:
+      - name: district_name
+        description: Name of the district
+        data_tests:
+          - not_null

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: community_facilitator_case_data
+  - name: cf_case_data
     description: Case data of community facilitators
     columns:
       - name: case_id
@@ -44,48 +44,19 @@ models:
               values:
               - "no"
               - "yes"
-  - name: champion_registration_case_data
-    description: This has details of the champions registered in the system
-    columns:
-      - name: case_id
-        description: Unique identifier for the case
+      - name: age
+        description: Age of the community facilitator
         data_tests:
           - not_null
-      - name: case_type
-        description: Commcare case type
+      - name: age_group
+        description: Age group of the community facilitator
         data_tests:
           - not_null
           - accepted_values:
               values:
-              - atmiyata_champion
-      - name: religion
-        description: Religion of the champion
-        data_tests:
-          - accepted_values:
-              values:
-              - hindu
-              - muslim
-              - christian
-              - sikh
-              - jain
-              - buddhist
-              - prefer_not_to_say
-      - name: caste
-        description: Caste of the champion
-        data_tests:
-          - accepted_values:
-              values:
-              - general
-              - scst
-              - obc_sbc
-              - vj_nt
-              - prefer_not_to_say
-      - name: gender
-        description: Gender of the champion
-        data_tests:
-          - accepted_values:
-              values:
-              - male
-              - female
-              - transgender
-              - prefer_not_to_say
+              - Below 19
+              - 19-23
+              - 24-25
+              - 26-30
+              - 31-35
+              - Above 36
