@@ -23,7 +23,6 @@ models:
           - dbt_utils.not_empty_string
   - name: all_case_deduped
     description: Deduplicated case data on case_id
-    # TODO: its not letting me write column level and table level tests in the same model key
     data_tests: 
       - dbt_expectations.expect_table_columns_to_contain_set:
           column_list: ["case_id", "case_type", "owner_id", "indexed_on", "closed", "domain", "user_id", "closed_by", "opened_by", "data"]
