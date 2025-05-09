@@ -5,7 +5,11 @@
 
 SELECT
     {{ dbt_utils.star(from=ref('all_case_deduped'), except=["data"]) }}, -- metafields
-    COALESCE(NULLIF(data -> 'properties' ->> 'caste_ECHR', ''), data -> 'properties' ->> 'caste') AS caste,
+    COALESCE(
+        NULLIF(data -> 'properties' ->> 'caste_ECHR', ''),
+        NULLIF(data -> 'properties' ->> 'caste_CHR', ''),
+        data -> 'properties' ->> 'caste'
+    ) AS caste,
     COALESCE(
         NULLIF(data -> 'properties' ->> 'religion_ECHR', ''), data -> 'properties' ->> 'religion_CHR'
     ) AS religion,
