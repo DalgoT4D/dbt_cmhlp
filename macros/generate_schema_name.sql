@@ -3,8 +3,8 @@
 
     {%- if custom_schema_name is none -%}
 
-        {# Concat the subfolder(s) name to only #}
-        {% set prefix = node.fqn [1:-1] | join('_') %}
+        {# Extract only the first folder name (e.g., 'staging') #}
+        {% set prefix = node.fqn [1] %}
         
         {# Staging models can be same for prod or dev profiles/target schema #}
         {% if 'prod' in default_schema or 'staging' in node.fqn or 'seed_data' in node.fqn %}

@@ -1,7 +1,7 @@
 WITH village_data AS (
     SELECT *
     FROM {{ ref('village_case_data') }}
-    WHERE village_name IS NOT null AND TRIM(village_name) != ''
+    WHERE case_name IS NOT null AND TRIM(case_name) != ''
 ),
 
 -- Religion slices
@@ -11,7 +11,7 @@ religion_slices AS (
     {% for religion in religions %}
         SELECT
             district_name,
-            village_name,
+            case_name AS village_name,
             case_type,
             community_facilitator_name,
             'religion' AS slice,
@@ -33,7 +33,7 @@ caste_slices AS (
     {% for caste in castes %}
         SELECT
             district_name,
-            village_name,
+            case_name AS village_name,
             case_type,
             community_facilitator_name,
             'caste' AS slice,
@@ -55,7 +55,7 @@ gender_slices AS (
     {% for gender in genders %}
         SELECT
             district_name,
-            village_name,
+            case_name AS village_name,
             case_type,
             community_facilitator_name,
             'gender' AS slice,
@@ -77,7 +77,7 @@ community_health_worker_slices AS (
     {% for worker in workers %}
         SELECT
             district_name,
-            village_name,
+            case_name AS village_name,
             case_type,
             community_facilitator_name,
             'community_health_worker' AS slice,
@@ -96,7 +96,7 @@ community_health_worker_slices AS (
 generic_slices AS (
     SELECT
         district_name,
-        village_name,
+        case_name AS village_name,
         case_type,
         community_facilitator_name,
         'total' AS slice,

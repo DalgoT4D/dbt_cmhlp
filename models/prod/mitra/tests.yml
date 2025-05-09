@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: mitra_case_data
+    description: Data from the mitra registration. All the mitras here are trained
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+              - atmiyata_mitra

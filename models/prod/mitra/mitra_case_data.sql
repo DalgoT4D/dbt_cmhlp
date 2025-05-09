@@ -1,3 +1,4 @@
+-- This table pulls case data for mitras. Currently we are looking at fields related to registration of mitras
 -- Mitra registration only happens after training. So we can assume the 
 -- data extracted below is of trained mitras
 
@@ -21,5 +22,5 @@ SELECT
             - LENGTH(REPLACE(TRIM(data -> 'properties' ->> 'village_name_mitra'), ',', ''))
             + 1
     END AS no_of_villages
-FROM {{ ref('raw_case_data') }}
+FROM {{ ref('all_case_deduped') }}
 WHERE data -> 'properties' ->> 'case_type' = 'atmiyata_mitra'

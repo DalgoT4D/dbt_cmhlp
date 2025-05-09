@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: village_case_data_long
+    description: Extracting counts of various demographics (relgion, cast, gender) in any village
+    columns:
+      - name: village_name
+        description: Name of the village
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+      - name: slice
+        description: Slice through which we want to count the population
+        data_tests:
+          - accepted_values:
+              values:
+              - religion
+              - caste
+              - total
+              - gender
+              - community_health_worker
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
