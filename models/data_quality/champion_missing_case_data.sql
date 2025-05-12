@@ -5,3 +5,4 @@ WHERE
     OR (caste IS null OR caste = '')
     OR (village_name IS null OR village_name = '')
     OR (is_physically_disabled IS null OR is_physically_disabled = '')
+    OR (age IS null)

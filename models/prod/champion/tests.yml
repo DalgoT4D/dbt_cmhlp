@@ -59,3 +59,15 @@ models:
               - female
               - transgender
               - prefer_not_to_say
+      - name: age_group
+        description: Age group of the champion
+        data_tests:
+          - accepted_values:
+              values:
+              - Below 18
+              - 18-25
+              - 26-30
+              - 31-35
+              - 36-40
+              - 41-50
+              - Above 51
