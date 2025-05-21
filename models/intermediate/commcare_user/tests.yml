@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: commcare_user_data
+    description: This model pulls the data of CommCare users
+    columns:
+      - name: role
+        description: Role of the user
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - project_manager
+                - community_facilitator
+                - champion
