@@ -35,6 +35,10 @@ models:
   elementary:
     ## elementary models will be created in the schema '<your_schema>_elementary'
     schema: "elementary"
+  cmhlp:
+    data_quality:
+      +tags: ['data_quality']
+
   +materialized: table
 
 flags: 
