@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: champion_missing_case_data
+    description: Missing case data of champions
+    columns:
+      - name: gender
+        description: Gender of the champion
+        data_tests:
+          - not_null
+      - name: religion
+        description: Religion of the champion
+        data_tests:
+          - not_null
+      - name: village_name
+        description: Village name of the champion
+        data_tests:
+          - not_null
+      - name: caste
+        description: Caste of the champion
+        data_tests:
+          - not_null
+      - name: age
+        description: Age of the champion
+        data_tests:
+          - not_null
