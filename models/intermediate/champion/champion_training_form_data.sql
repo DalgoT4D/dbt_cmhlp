@@ -70,6 +70,8 @@ SELECT
         ),
         null
     )::INTEGER AS no_of_general_champions_completed,
+    data -> 'form' -> 'meta' ->> 'userID' AS user_id,
+    data -> 'form' -> 'meta' ->> 'username' AS username,
     -- The below logic is used to count the number of villages covered. The column "champion_village_CHR" 
     -- is a multi-select value so the names of villages in the col "champion_village_CHR" 
     -- are separated by a space. Reading the count from here is more accurate 

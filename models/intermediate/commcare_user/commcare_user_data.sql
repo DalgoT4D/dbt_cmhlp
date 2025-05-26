@@ -5,7 +5,9 @@ SELECT
     data -> 'properties' ->> 'username' AS username,
     data -> 'properties' ->> 'first_name' AS first_name,
     data -> 'properties' ->> 'last_name' AS last_name,
-    data -> 'properties' ->> 'Role' AS role
+    data -> 'properties' ->> 'Role' AS role,
+    data -> 'properties' ->> 'commcare_location_id' AS commcare_location_id,
+    data -> 'properties' ->> 'commcare_location_ids' AS commcare_location_ids
 FROM
     {{ ref('all_case_deduped') }}
 WHERE
