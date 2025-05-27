@@ -42,3 +42,15 @@ sources:
     - name: refresher_champion_training_form
       identifier: Refresher_Training_Details
       description: This is form to capture the details of the refresher training sessions attended by the champions
+- name: org
+  schema: staging_org
+  tables:
+    - name: location
+      identifier: location
+      description: 
+        This table contains the details of all locations in the CommCare application.
+    - name: location_type
+      identifier: location_type
+      description: 
+        This table contains the details of all location types in the CommCare application.
+  
