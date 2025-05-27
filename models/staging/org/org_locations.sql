@@ -2,12 +2,13 @@
 
 WITH locations_cte AS (
     SELECT
-        id::INTEGER,
+        id,
         name,
         domain,
         parent,
         location_id AS location_uuid,
         longitude,
+        site_code,
         substring(location_type FROM '/location_type/([0-9]+)/')::INTEGER AS location_type_id,
         substring(parent FROM '/location/([a-zA-Z0-9]+)/') AS parent_location_uuid
     FROM {{ source('org', 'location') }}
@@ -15,7 +16,7 @@ WITH locations_cte AS (
 
 location_types_cte AS (
     SELECT
-        id::INTEGER,
+        id,
         code,
         name,
         domain,
@@ -36,6 +37,7 @@ locations_merged AS (
         locations_cte.location_uuid,
         locations_cte.longitude AS location_longitude,
         locations_cte.parent_location_uuid,
+        locations_cte.site_code AS location_site_code,
         location_types_cte.id AS location_type_id,
         location_types_cte.code AS location_type_code,
         location_types_cte.name AS location_type_name,
@@ -60,9 +62,9 @@ map_community_facilitators AS (
         CASE
             WHEN
                 champion_locations.location_type_code = 'community-facilitator'
-                THEN champion_locations.location_type_code
-            WHEN champion_locations.location_type_code = 'champion' THEN community_facilitators.location_type_code
-        END AS hierarchy_cf_location_code
+                THEN champion_locations.location_site_code
+            WHEN champion_locations.location_type_code = 'champion' THEN community_facilitators.location_site_code
+        END AS hierarchy_cf_location_site_code
     FROM locations_merged AS champion_locations
     LEFT JOIN locations_merged AS community_facilitators
         ON
@@ -83,10 +85,10 @@ map_project_managers AS (
         CASE
             WHEN
                 champions_cfs_locations.location_type_code = 'project-manager'
-                THEN champions_cfs_locations.location_type_code
+                THEN champions_cfs_locations.location_site_code
             ELSE
-                project_managers_locations.location_type_code
-        END AS hierarchy_pm_location_code
+                project_managers_locations.location_site_code
+        END AS hierarchy_pm_location_site_code
     FROM map_community_facilitators AS champions_cfs_locations
     LEFT JOIN map_community_facilitators AS intermediate_cfs
         ON champions_cfs_locations.hierarchy_cf_location_uuid = intermediate_cfs.location_uuid

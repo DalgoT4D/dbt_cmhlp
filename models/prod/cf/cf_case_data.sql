@@ -22,7 +22,8 @@ WITH cte AS (
         data -> 'properties' ->> 'date_of_7th_day_of_training_CFR' AS date_of_7th_day_of_training,
         data -> 'properties' ->> 'end_date_of_management_training_CFR' AS end_date_of_management_training,
         data -> 'properties' ->> 'start_date_of_management_training_CFR' AS start_date_of_management_training,
-        data -> 'properties' ->> 'material_given_to_cf_from_atmiyata_CFR' AS material_given
+        data -> 'properties' ->> 'material_given_to_cf_from_atmiyata_CFR' AS material_given,
+        data -> 'properties' ->> 'has_cf_resigned_or_terminated_CFD' AS resigned_or_terminated
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
@@ -31,6 +32,10 @@ WITH cte AS (
 
 SELECT
     *,
+    CASE
+        WHEN resigned_or_terminated IS NOT null THEN 'dropout'
+        ELSE 'active'
+    END AS status,
     CASE
         WHEN age < 19 THEN 'Below 19'
         WHEN age BETWEEN 19 AND 23 THEN '19-23'

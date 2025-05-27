@@ -13,3 +13,11 @@ models:
                 - project_manager
                 - community_facilitator
                 - champion
+  - name: commcare_user_locations
+    description: This model maps users to their locations
+    columns:
+      - name: location_uuid
+        description: Unique identifier for the location
+        data_tests:
+          - not_null
+    
