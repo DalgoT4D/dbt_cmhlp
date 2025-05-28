@@ -7,3 +7,9 @@ models:
       - dbt_expectations.expect_table_row_count_to_be_between:
           min_value: 0
           max_value: 5
+  - name: beneficiary_missing_case_data
+    description: Missing case data of beneficiary
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 0
+          max_value: 100

@@ -49,14 +49,24 @@ WITH cte AS (
 )
 
 SELECT
-    *,
+    cte.*,
     CASE
-        WHEN age < 18 THEN 'Below 18'
-        WHEN age BETWEEN 18 AND 25 THEN '18-25'
-        WHEN age BETWEEN 26 AND 30 THEN '26-30'
-        WHEN age BETWEEN 31 AND 35 THEN '31-35'
-        WHEN age BETWEEN 36 AND 40 THEN '36-40'
-        WHEN age BETWEEN 41 AND 50 THEN '41-50'
-        WHEN age > 50 THEN 'Above 51'
+        WHEN cte.age < 18 THEN 'Below 18'
+        WHEN cte.age BETWEEN 18 AND 25 THEN '18-25'
+        WHEN cte.age BETWEEN 26 AND 30 THEN '26-30'
+        WHEN cte.age BETWEEN 31 AND 35 THEN '31-35'
+        WHEN cte.age BETWEEN 36 AND 40 THEN '36-40'
+        WHEN cte.age BETWEEN 41 AND 50 THEN '41-50'
+        WHEN cte.age > 50 THEN 'Above 51'
     END AS age_group
 FROM cte
+{{ filter_test_user_entries(cte) }}
+WHERE
+    {{ missing_data_clause([
+        'caste', 
+        'religion', 
+        'gender',
+        'is_physically_disabled', 
+        'village_name', 
+        'vaas_name'
+    ], filter_type="out") }}

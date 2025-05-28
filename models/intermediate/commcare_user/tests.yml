@@ -20,4 +20,9 @@ models:
         description: Unique identifier for the location
         data_tests:
           - not_null
+      - name: user_id
+        description: Unique identifier for the user
+        data_tests:
+          - not_null
+          - unique
     

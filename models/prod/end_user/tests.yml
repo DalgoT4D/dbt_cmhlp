@@ -33,8 +33,9 @@ models:
           - accepted_values:
               values:
               - general
-              - scst
+              - sc_st
               - obc_sbc
+              - obc
               - vj_nt
               - prefer_not_to_say
       - name: gender
@@ -42,9 +43,11 @@ models:
         data_tests:
           - accepted_values:
               values:
-              - male
-              - female
-              - transgender
+              - male_gender_reg
+              - female_gender_reg
+              - female_gender
+              - trans_gender_reg
+              - trans_gender
               - prefer_not_to_say
       - name: age_group
         description: Age group of the beneficiary

@@ -35,11 +35,8 @@ models:
               values:
               - hindu
               - muslim
-              - christian
               - sikh
-              - jain
               - buddhist
-              - prefer_not_to_say
       - name: caste
         description: Caste of the champion
         data_tests:
@@ -48,17 +45,16 @@ models:
               - general
               - scst
               - obc_sbc
+              - obc
               - vj_nt
-              - prefer_not_to_say
       - name: gender
         description: Gender of the champion
         data_tests:
           - accepted_values:
               values:
-              - male
               - female
-              - transgender
-              - prefer_not_to_say
+              - male
+              - male_gender_reg
       - name: age_group
         description: Age group of the champion
         data_tests:

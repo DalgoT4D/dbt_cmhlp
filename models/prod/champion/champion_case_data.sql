@@ -57,3 +57,12 @@ SELECT
         WHEN age > 50 THEN 'Above 51'
     END AS age_group
 FROM cte
+WHERE
+    {{ missing_data_clause([
+        'gender', 
+        'religion', 
+        'caste', 
+        'is_physically_disabled', 
+        'village_name', 
+        'age'
+    ], filter_type="out") }}
