@@ -14,7 +14,7 @@ models:
               - dropout
               - phcs_covered
               - villages_covered
-  - name: champion_case_data
+  - name: champion_case_data_agg
     description: This has details of the champions registered in the system
     columns:
       - name: case_id

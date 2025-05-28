@@ -3,13 +3,13 @@
 {% macro missing_data_clause(col_names, filter_type="in") -%}
     (
         {%- for col in col_names %}
-            {%- if type == "in" -%}
-                (COALESCE(TRIM({{ col }}::text), '') = '')
+            {%- if filter_type == "in" -%}
+                ({{col}} IS NULL OR {{col}}::text = '')
             {%- else -%}
-                (COALESCE(TRIM({{ col }}::text), '') <> '')
+                ({{col}} IS NOT NULL OR {{col}}::text != '')
             {%- endif -%}
             {%- if not loop.last %}
-                {%- if type == "in" -%} OR {%- else -%} AND {%- endif -%}
+                {%- if filter_type == "in" -%} OR {%- else -%} AND {%- endif -%}
             {%- endif %}
         {%- endfor %}
     )

@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: beneficiary_case_data
+  - name: beneficiary_case_data_agg
     description: This has details of the end users registered in the system with the atmiyata program
     columns:
       - name: case_id
