@@ -21,16 +21,36 @@ models:
         description: Unique identifier for the case
         data_tests:
           - not_null
+          - dbt_utils.not_empty_string
       - name: case_type
         description: Commcare case type
         data_tests:
           - not_null
+          - dbt_utils.not_empty_string
+          - accepted_values:
+              values:
+              - atmiyata_champion
+  - name: champion_case_data
+    description: This has details of the champions registered in the system
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - atmiyata_champion
       - name: religion
         description: Religion of the champion
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - hindu
@@ -40,6 +60,8 @@ models:
       - name: caste
         description: Caste of the champion
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - general
@@ -50,6 +72,8 @@ models:
       - name: gender
         description: Gender of the champion
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - female
@@ -58,6 +82,8 @@ models:
       - name: age_group
         description: Age group of the champion
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - Below 18
@@ -67,3 +93,12 @@ models:
               - 36-40
               - 41-50
               - Above 51
+      - name: is_dropped_out
+        description: Whether the champion has dropped out of the program
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+          - accepted_values:
+              values:
+              - yes
+              - no

@@ -7,5 +7,6 @@ WHERE
         'gender',
         'is_physically_disabled', 
         'village_name', 
-        'vaas_name'
+        'vaas_name',
+        'age'
     ], filter_type="out") }}

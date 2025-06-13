@@ -4,9 +4,11 @@
     (
         {%- for col in col_names %}
             {%- if filter_type == "in" -%}
-                ({{col}} IS NULL OR {{col}}::text = '')
+                -- ({{col}} IS NULL OR {{col}}::text = '')
+                 (COALESCE(TRIM({{ col }}::text), '') = '')
             {%- else -%}
-                ({{col}} IS NOT NULL OR {{col}}::text != '')
+                -- ({{col}} IS NOT NULL OR {{col}}::text != '')
+                (COALESCE(TRIM({{ col }}::text), '') <> '')
             {%- endif -%}
             {%- if not loop.last %}
                 {%- if filter_type == "in" -%} OR {%- else -%} AND {%- endif -%}

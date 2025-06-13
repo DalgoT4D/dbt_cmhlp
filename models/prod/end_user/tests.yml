@@ -8,6 +8,22 @@ models:
         description: Unique identifier for the case
         data_tests:
           - not_null
+          - dbt_utils.not_empty_string
+      - name: case_type
+        description: Commcare case type
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+          - accepted_values:
+              values:
+              - atmiyata_beneficiary
+  - name: beneficiary_case_data
+    description: This has details of the end users registered in the system with the atmiyata program
+    columns:
+      - name: case_id
+        description: Unique identifier for the case
+        data_tests:
+          - not_null
       - name: case_type
         description: Commcare case type
         data_tests:
@@ -18,6 +34,8 @@ models:
       - name: religion
         description: Religion of the beneficiary
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - hindu
@@ -30,6 +48,8 @@ models:
       - name: caste
         description: Caste of the beneficiary
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - general
@@ -41,6 +61,8 @@ models:
       - name: gender
         description: Gender of the beneficiary
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - male_gender_reg
@@ -52,6 +74,8 @@ models:
       - name: age_group
         description: Age group of the beneficiary
         data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
           - accepted_values:
               values:
               - Below 18
@@ -61,3 +85,4 @@ models:
               - 36-40
               - 41-50
               - Above 51
+

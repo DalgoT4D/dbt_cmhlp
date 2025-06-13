@@ -38,7 +38,10 @@ WITH cte AS (
         COALESCE(
             NULLIF(data -> 'properties' ->> 'community_facilitator_cf_name_ECHR', ''),
             data -> 'properties' ->> 'community_facilitator_cf_name_CHR'
-        ) AS community_facilitator_name
+        ) AS community_facilitator_name,
+        COALESCE(
+            data -> 'properties' ->> 'does_the_champion_still_want_to_discountinue_CH_dropout', 'no'
+        ) AS is_dropped_out
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
