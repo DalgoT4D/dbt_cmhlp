@@ -85,4 +85,13 @@ models:
               - 36-40
               - 41-50
               - Above 51
+      - name: is_dropped_out
+        description: Whether the beneficiary has dropped out of the program
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+          - accepted_values:
+              values:
+              - yes
+              - no
 

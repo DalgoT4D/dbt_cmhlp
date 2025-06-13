@@ -41,7 +41,12 @@ WITH cte AS (
         COALESCE(
             NULLIF(data -> 'properties' ->> 'social_benefits', ''),
             data -> 'properties' ->> 'ben_SB_reg'
-        ) AS is_enrolled_for_social_benefits
+        ) AS is_enrolled_for_social_benefits,
+        data -> 'properties' ->> 'reason_checklist_ben_dropout' AS reason_for_dropout,
+        CASE
+            WHEN data -> 'properties' ->> 'reason_checklist_ben_dropout' IS NOT null THEN 'yes'
+            ELSE 'no'
+        END AS is_dropped_out
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
