@@ -46,7 +46,83 @@ WITH cte AS (
         CASE
             WHEN data -> 'properties' ->> 'reason_checklist_ben_dropout' IS NOT null THEN 'yes'
             ELSE 'no'
-        END AS is_dropped_out
+        END AS is_dropped_out,
+        -- CMD session statuses - coming from CMD session forms
+        CASE
+            WHEN data -> 'properties' ->> 'completed_session_0' IS null THEN 'not_yet_started'
+            WHEN data -> 'properties' ->> 'completed_session_0' = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_0_status,
+        CASE
+            WHEN data -> 'properties' ->> 'completed_session_1' IS null THEN 'not_yet_started'
+            WHEN data -> 'properties' ->> 'completed_session_1' = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_1_status,
+        CASE
+            WHEN data -> 'properties' ->> 'completed_session_2' IS null THEN 'not_yet_started'
+            WHEN data -> 'properties' ->> 'completed_session_2' = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_2_status,
+        CASE
+            WHEN data -> 'properties' ->> 'completed_session_3' IS null THEN 'not_yet_started'
+            WHEN data -> 'properties' ->> 'completed_session_3' = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_3_status,
+        CASE
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_4_last',
+                data -> 'properties' ->> 'completed_session_4'
+            ) IS null THEN 'not_yet_started'
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_4_last',
+                data -> 'properties' ->> 'completed_session_4'
+            ) = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_4_status,
+        CASE
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_5_last',
+                data -> 'properties' ->> 'completed_session_5'
+            ) IS null THEN 'not_yet_started'
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_5_last',
+                data -> 'properties' ->> 'completed_session_5'
+            ) = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_5_status,
+        CASE
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_6_last',
+                data -> 'properties' ->> 'completed_session_6'
+            ) IS null THEN 'not_yet_started'
+            WHEN COALESCE(
+                data -> 'properties' ->> 'completed_session_6_last',
+                data -> 'properties' ->> 'completed_session_6'
+            ) = 'yes' THEN 'completed'
+            ELSE 'invalid'
+        END AS cmd_session_6_status,
+        data -> 'properties' ->> 'after_which_session_ben_dropout' AS after_which_session_ben_dropout, -- dropout form
+        CASE
+            WHEN COALESCE(NULLIF(data -> 'properties' ->> 'after_which_session_ben_dropout', '')) IS NOT null
+                THEN
+                    REGEXP_REPLACE(
+                        data -> 'properties' ->> 'after_which_session_ben_dropout', 'session_', '', 'g'
+                    )::INTEGER
+            WHEN data -> 'properties' ->> 'completed_session_6_last' IS NOT null THEN 6
+            WHEN data -> 'properties' ->> 'completed_session_5_last' IS NOT null THEN 5
+            WHEN data -> 'properties' ->> 'completed_session_4_last' IS NOT null THEN 4
+            WHEN data -> 'properties' ->> 'completed_session_3' = 'yes' THEN 3
+            WHEN data -> 'properties' ->> 'completed_session_2' = 'yes' THEN 2
+            WHEN data -> 'properties' ->> 'completed_session_1' = 'yes' THEN 1
+            WHEN data -> 'properties' ->> 'completed_session_0' = 'yes' THEN 0
+        END AS last_cmd_session_completed_no,
+        CASE
+            WHEN NULLIF(data -> 'properties' ->> 'after_which_session_ben_dropout', '') IS NOT null
+                THEN
+                    REGEXP_REPLACE(
+                        data -> 'properties' ->> 'after_which_session_ben_dropout', 'session_', '', 'g'
+                    )::INTEGER
+        END AS dropout_cmd_session_no
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
@@ -63,6 +139,13 @@ SELECT
         WHEN cte.age BETWEEN 36 AND 40 THEN '36-40'
         WHEN cte.age BETWEEN 41 AND 50 THEN '41-50'
         WHEN cte.age > 50 THEN 'Above 51'
-    END AS age_group
+    END AS age_group,
+    CASE
+        WHEN cte.dropout_cmd_session_no IS NOT null THEN 'dropout'
+        WHEN cte.last_cmd_session_completed_no IN (4, 5, 6) THEN 'completed'
+        WHEN cte.last_cmd_session_completed_no >= 0 THEN 'ongoing'
+        WHEN cte.is_enrolled_for_cmd = 'yes' THEN 'not_started'
+        ELSE 'not_enrolled'
+    END AS cmd_case_status
 FROM cte
 {{ filter_test_user_entries(cte) }}
