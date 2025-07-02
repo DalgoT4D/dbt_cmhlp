@@ -36,10 +36,6 @@ WITH cte AS (
             NULLIF(data -> 'properties' ->> 'occupation_ECHR', ''), data -> 'properties' ->> 'occupation_CHR'
         ) AS occupation,
         COALESCE(
-            NULLIF(data -> 'properties' ->> 'community_facilitator_cf_name_ECHR', ''),
-            data -> 'properties' ->> 'community_facilitator_cf_name_CHR'
-        ) AS community_facilitator_name,
-        COALESCE(
             data -> 'properties' ->> 'does_the_champion_still_want_to_discountinue_CH_dropout', 'no'
         ) AS is_dropped_out
     FROM
@@ -50,6 +46,8 @@ WITH cte AS (
 
 SELECT
     cte.*,
+    cfs.full_name AS community_facilitator_name,
+    cfs.username AS community_facilitator_username,
     CASE
         WHEN cte.age < 18 THEN 'Below 18'
         WHEN cte.age BETWEEN 18 AND 25 THEN '18-25'
@@ -60,4 +58,4 @@ SELECT
         WHEN cte.age > 50 THEN 'Above 51'
     END AS age_group
 FROM cte
-{{ filter_test_user_entries(cte) }}
+{{ fetch_org_hierarchy(cte, start_role = 'cf', remove_test_entries = 'yes') }}

@@ -30,6 +30,16 @@ models:
           - accepted_values:
               values:
               - atmiyata_champion
+      - name: community_facilitator_name
+        description: Full name of the community facilitator associated with the champion
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: community_facilitator_username
+        description: Username of the community facilitator associated with the champion
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
   - name: champion_case_data
     description: This has details of the champions registered in the system
     columns:
