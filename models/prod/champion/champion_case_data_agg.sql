@@ -26,6 +26,10 @@ WITH cte AS (
             data -> 'properties' ->> 'champion_village_CHR'
         ) AS village_name,
         COALESCE(
+            NULLIF(data -> 'properties' ->> 'phc_name_ECHR', ''),
+            data -> 'properties' ->> 'phc_name_CHR'
+        ) AS phc_name,
+        COALESCE(
             NULLIF(data -> 'properties' ->> 'vaas_name_ECHR', ''), data -> 'properties' ->> 'vaas_name'
         ) AS vaas_name,
         COALESCE(
