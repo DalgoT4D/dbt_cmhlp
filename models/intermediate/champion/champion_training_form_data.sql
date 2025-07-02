@@ -125,14 +125,13 @@ WITH cte AS (
         data -> 'form' -> 'champion_training_details' ->> 'phc_name_CHR' AS phc_name,
         data -> 'form' -> 'champion_training_details' ->> 'champion_village_CHR' AS champion_village,
         data -> 'form' -> 'champion_training_details' ->> 'training_batch_name_CHT' AS training_batch_name,
-        data -> 'form' -> 'champion_training_details' ->> 'place_of_the_training_CHT' AS place_of_the_training,
-        data
-        -> 'form'
-        -> 'champion_training_details'
-        ->> 'community_facilitator_cf_name_CHR' AS community_facilitator_name
+        data -> 'form' -> 'champion_training_details' ->> 'place_of_the_training_CHT' AS place_of_the_training
     FROM {{ ref('champion_training_form_merged') }}
 )
 
-SELECT cte.*
+SELECT
+    cte.*,
+    cfs.full_name AS community_facilitator_name,
+    cfs.username AS community_facilitator_username
 FROM cte
-{{ filter_test_user_entries(cte) }}
+{{ fetch_org_hierarchy(cte, start_role = 'cf', remove_test_entries = 'yes') }}

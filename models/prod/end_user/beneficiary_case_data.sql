@@ -1,5 +1,5 @@
-SELECT beneficiary_case_data_agg.*
-FROM {{ ref('beneficiary_case_data_agg') }} AS beneficiary_case_data_agg
+SELECT *
+FROM {{ ref('beneficiary_case_data_agg') }}
 WHERE
     {{ missing_data_clause([
         'caste', 

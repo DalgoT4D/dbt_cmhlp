@@ -8,7 +8,8 @@ SELECT
     locations.hierarchy_cf_location_uuid,
     locations.hierarchy_cf_location_site_code,
     locations.hierarchy_pm_location_uuid,
-    locations.hierarchy_pm_location_site_code
+    locations.hierarchy_pm_location_site_code,
+    CONCAT(users.first_name, ' ', users.last_name) AS full_name
 FROM {{ ref('commcare_user_data') }} AS users
 LEFT JOIN {{ ref('org_locations') }} AS locations
     ON users.commcare_location_uuid = locations.location_uuid
