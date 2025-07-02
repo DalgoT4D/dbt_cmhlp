@@ -131,6 +131,11 @@ WITH cte AS (
 
 SELECT
     cte.*,
+    champions.full_name AS champion_name,
+    champions.username AS champion_username,
+    --- org hierarchy
+    cfs.full_name AS community_facilitator_name,
+    cfs.username AS community_facilitator_username,
     CASE
         WHEN cte.age < 18 THEN 'Below 18'
         WHEN cte.age BETWEEN 18 AND 25 THEN '18-25'
@@ -148,4 +153,4 @@ SELECT
         ELSE 'not_enrolled'
     END AS cmd_case_status
 FROM cte
-{{ filter_test_user_entries(cte) }}
+{{ fetch_org_hierarchy(cte, start_role = 'champion') }}

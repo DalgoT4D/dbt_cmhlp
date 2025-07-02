@@ -9,6 +9,7 @@ models:
         data_tests:
           - not_null
           - dbt_utils.not_empty_string
+          - unique
       - name: case_type
         description: Commcare case type
         data_tests:
@@ -41,6 +42,26 @@ models:
               - '4'
               - '5'
               - '6'
+      - name: champion_username
+        description: Username of the champion associated with the beneficiary
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: champion_name
+        description: Full name of the champion associated with the beneficiary
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: community_facilitator_name
+        description: Full name of the community facilitator associated with the beneficiary
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: community_facilitator_username
+        description: Username of the community facilitator associated with the beneficiary
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
 
   - name: beneficiary_case_data
     description: This has details of the end users registered in the system with the atmiyata program
