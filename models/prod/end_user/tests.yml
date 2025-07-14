@@ -62,7 +62,42 @@ models:
         data_tests:
           - not_null
           - dbt_utils.not_empty_string
-
+      - name: smd_referred_beneficiary_ready
+        description: Whether the beneficiary is ready for treatment as per SMD referral
+        data_tests:
+          - accepted_values:
+              values:
+              - "yes"
+              - "no"
+              config:
+                where: "smd_referred_beneficiary_ready IS NOT NULL"
+      - name: smd_referred_beneficiary_met_doc
+        description: Whether the beneficiary has met the psychiatrist as per SMD referral
+        data_tests:
+          - accepted_values:
+              values:
+              - "yes"
+              - "no"
+              config:
+                where: "smd_referred_beneficiary_met_doc IS NOT NULL"
+      - name: sb_beneficiary_agreed
+        description: Whether the beneficiary has agreed to the social benefit scheme
+        data_tests:
+          - accepted_values:
+              values:
+              - "yes"
+              - "no"
+              config:
+                where: "sb_beneficiary_agreed IS NOT NULL"
+      - name: has_received_social_benefits
+        description: Whether the beneficiary has received social benefits
+        data_tests:
+          - accepted_values:
+              values:
+              - "yes"
+              - "no"
+              config:
+                where: "has_received_social_benefits IS NOT NULL"
   - name: beneficiary_case_data
     description: This has details of the end users registered in the system with the atmiyata program
     columns:

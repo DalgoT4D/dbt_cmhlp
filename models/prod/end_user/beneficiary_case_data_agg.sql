@@ -122,7 +122,42 @@ WITH cte AS (
                     REGEXP_REPLACE(
                         data -> 'properties' ->> 'after_which_session_ben_dropout', 'session_', '', 'g'
                     )::INTEGER
-        END AS dropout_cmd_session_no
+        END AS dropout_cmd_session_no,
+        --- SMD referral fields
+        data -> 'properties' ->> 'beneficiary_ready_for_treatment_SMD' AS smd_referred_beneficiary_ready,
+        data -> 'properties' ->> 'referred_to_SMD' AS smd_referred_to_institution,
+        data -> 'properties' ->> 'has_the_beneficiary_met_the_psychiatrist_SMDref' AS smd_referred_beneficiary_met_doc,
+        data -> 'properties' ->> 'professional_type_SMDref' AS smd_referred_professional_type,
+        --- Social benefits fields
+        data -> 'properties' ->> 'agreed_for_sb_SB' AS sb_beneficiary_agreed,
+        CASE
+            WHEN
+                data -> 'properties' ->> 'has_the_benefiary_applied_for_the_social_benefit_scheme_SB_follow-up' = 'yes'
+                AND (
+                    data -> 'properties' ->> 'current_status_shramik_suraksha_yojana_SB_follow-up' = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_vidhwa_pension_yojana_SB_follow-up' = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_disability_certificate_SB_follow-up'
+                    = 'received_benefit'
+                    OR data
+                    -> 'properties'
+                    ->> 'current_status_mahatma_gandhi_rashtriya_gramin_rojgar_yojana_SB_follow-up'
+                    = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_scholarship_for_disabled_students_SB_follow-up'
+                    = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_vridh_pension_yojana_SB_follow-up' = 'received_benefit'
+                    OR data
+                    -> 'properties'
+                    ->> 'current_status_indira_gandhi_national_disability_pension_scheme_SB_follow-up'
+                    = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_of_palak_mata_pita_yojana_SB_follow-up'
+                    = 'received_benefit'
+                    OR data -> 'properties' ->> 'current_status_of_ayushman_bharat_yojana_SB_follow-up'
+                    = 'received_benefit'
+                )
+                THEN 'yes'
+            WHEN data -> 'properties' ->> 'has_the_benefiary_applied_for_the_social_benefit_scheme_SB_follow-up' = 'yes'
+                THEN 'no'
+        END AS has_received_social_benefits
     FROM
         {{ ref('all_case_deduped') }}
     WHERE

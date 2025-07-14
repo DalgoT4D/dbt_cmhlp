@@ -14,6 +14,9 @@ sources:
     - name: refresher_champion_training_form
       identifier: Refresher_Training_Details
       description: This is form to capture the details of the refresher training sessions attended by the champions
+    - name: film_survey
+      identifier: Film_survey
+      description: This table contains the details of the film survey conducted in the Mehsana district
 - name: patan
   schema: staging_patan
   tables:
@@ -28,6 +31,9 @@ sources:
     - name: refresher_champion_training_form
       identifier: Refresher_Training_Details
       description: This is form to capture the details of the refresher training sessions attended by the champions
+    - name: film_survey
+      identifier: Film_survey
+      description: This table contains the details of the film survey conducted in the Patan district
 - name: sabarkantha
   schema: staging_sabarkantha
   tables:
@@ -42,6 +48,9 @@ sources:
     - name: refresher_champion_training_form
       identifier: Refresher_Training_Details
       description: This is form to capture the details of the refresher training sessions attended by the champions
+    - name: film_survey
+      identifier: Film_survey
+      description: This table contains the details of the film survey conducted in the Sabarkantha district
 - name: org
   schema: staging_org
   tables:

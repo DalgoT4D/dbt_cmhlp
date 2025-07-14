@@ -8,13 +8,13 @@ models:
         description: Name of the district
         data_tests:
           - not_null
-  - name: community_facilitator_name
-    description: Full name of the community facilitator associated with the champion
-    data_tests:
-      - not_null
-      - dbt_utils.not_empty_string
-  - name: community_facilitator_username
-    description: Username of the community facilitator associated with the champion
-    data_tests:
-      - not_null
-      - dbt_utils.not_empty_string
+      - name: community_facilitator_name
+        description: Full name of the community facilitator associated with the champion
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
+      - name: community_facilitator_username
+        description: Username of the community facilitator associated with the champion
+        data_tests:
+          - not_null
+          - dbt_utils.not_empty_string
