@@ -21,6 +21,13 @@ SELECT
             LENGTH(TRIM(data -> 'properties' ->> 'village_name_mitra'))
             - LENGTH(REPLACE(TRIM(data -> 'properties' ->> 'village_name_mitra'), ',', ''))
             + 1
-    END AS no_of_villages
+    END AS no_of_villages,
+    COALESCE(
+	    data -> 'properties' ->> 'does_the_mitra_still_want_to_discountinue_mitra_dropout', 'no'
+    ) AS is_dropped_out,
+    COALESCE(
+        data -> 'properties' ->> 'reason_for_mitra_drop_out_CH_dropout' as , 'N/A'
+    ) as reason_for_dropout
+
 FROM {{ ref('all_case_deduped') }}
 WHERE data -> 'properties' ->> 'case_type' = 'atmiyata_mitra'

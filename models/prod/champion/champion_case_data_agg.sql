@@ -41,7 +41,10 @@ WITH cte AS (
         ) AS occupation,
         COALESCE(
             data -> 'properties' ->> 'does_the_champion_still_want_to_discountinue_CH_dropout', 'no'
-        ) AS is_dropped_out
+        ) AS is_dropped_out,
+        COALESCE(
+            data -> 'properties' ->> 'reason_for_champion_drop_out_CH_dropout', 'N/A'
+        ) as reason_for_dropout
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
