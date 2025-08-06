@@ -41,7 +41,10 @@ WITH cte AS (
         ) AS occupation,
         COALESCE(
             data -> 'properties' ->> 'does_the_champion_still_want_to_discountinue_CH_dropout', 'no'
-        ) AS is_dropped_out
+        ) AS is_dropped_out,
+        COALESCE(
+            data -> 'properties' ->> 'reason_for_champion_drop_out_CH_dropout', 'N/A'
+        ) as reason_for_dropout
     FROM
         {{ ref('all_case_deduped') }}
     WHERE
@@ -60,6 +63,24 @@ SELECT
         WHEN cte.age BETWEEN 36 AND 40 THEN '36-40'
         WHEN cte.age BETWEEN 41 AND 50 THEN '41-50'
         WHEN cte.age > 50 THEN 'Above 51'
-    END AS age_group
+    END AS age_group,
+    case cte.reason_for_dropout
+        when 'dissatisfaction_with_the_work' then 'Dissatisfaction With Work'
+        when 'dissatisfaction_with_the_CF' then 'Dissatisfaction With CF'
+        when 'don''t_have_time_for_the_work' then 'Time Constraints'
+        when 'spousal_conflict' then 'Spousal Conflict'
+        when 'family_conflict' then 'Family Conflict'
+        when 'community_conflict' then 'Community Conflict'
+        when 'migration' then 'Migration'
+        when 'physical_illeness' then 'Physical Illness'
+        when 'accident_physical_injury' then 'Accident / Physical injury'
+        when 'significant_life_event' then 'Significant Life Event'
+        when 'unable_to_identify_the_issue' then 'CF Unable To Identify The Issue'
+        when 'death' then 'Death'
+        when 'suicide' then 'Suicide'
+        when 'N/A' then 'N/A'
+        else 'Multiple Reasons'
+    END as reason_for_dropout_display
+
 FROM cte
 {{ fetch_org_hierarchy(cte, start_role = 'cf', remove_test_entries = 'yes') }}

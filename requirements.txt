@@ -16,7 +16,7 @@ dbt-extractor==0.5.1
 dbt-postgres==1.9.0
 dbt-semantic-interfaces==0.5.1
 deepdiff==7.0.1
-diff_cover==9.2.4
+diff_cover==9.6.0
 distlib==0.3.9
 filelock==3.18.0
 identify==2.6.9
@@ -35,7 +35,7 @@ mashumaro==3.14
 minimal-snowplow-tracker==0.0.2
 more-itertools==10.6.0
 msgpack==1.1.0
-networkx==3.4.2
+networkx==3.2.1
 nodeenv==1.9.1
 ordered-set==4.1.0
 packaging==24.2
@@ -45,7 +45,7 @@ platformdirs==4.3.7
 pluggy==1.5.0
 pre_commit==4.2.0
 protobuf==4.25.6
-psycopg2-binary==2.9.10
+psycopg2-binary
 pydantic==2.10.6
 pydantic_core==2.27.2
 Pygments==2.19.1
