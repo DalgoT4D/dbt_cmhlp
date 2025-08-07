@@ -17,6 +17,9 @@ sources:
     - name: film_survey
       identifier: Film_survey
       description: This table contains the details of the film survey conducted in the Mehsana district
+    - name: stakeholder_form
+      identifier: Stakeholders_form
+      description: This table contains the details of the stakeholders involved in the Mehsana district
 - name: patan
   schema: staging_patan
   tables:
@@ -34,6 +37,9 @@ sources:
     - name: film_survey
       identifier: Film_survey
       description: This table contains the details of the film survey conducted in the Patan district
+    - name: stakeholder_form
+      identifier: Stakeholders_form
+      description: This table contains the details of the stakeholders involved in the Patan district
 - name: sabarkantha
   schema: staging_sabarkantha
   tables:
@@ -51,6 +57,9 @@ sources:
     - name: film_survey
       identifier: Film_survey
       description: This table contains the details of the film survey conducted in the Sabarkantha district
+    - name: stakeholder_form
+      identifier: Stakeholders_form
+      description: This table contains the details of the stakeholders involved in the Mehsana district
 - name: org
   schema: staging_org
   tables:
