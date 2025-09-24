@@ -1,0 +1,4 @@
+district_name,expected_ch,expected_villages,expected_cf_factor,expected_mitras_factor,expected_cmd_factor,expected_smd_factor,expected_sb_factor,expected_film_factor
+mehsana,1004,514,0.02,4,1,0.3,0.5,6
+patan,1064,457,0.02,4,1,0.3,0.5,6
+sabarkantha,788,450,0.02,4,1,0.3,0.5,6
