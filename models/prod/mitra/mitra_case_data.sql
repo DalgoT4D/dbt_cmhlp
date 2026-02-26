@@ -6,6 +6,9 @@ with cte as (
     SELECT
         district_name,
         indexed_on,
+        --data & time of registration
+        EXTRACT(MONTH FROM indexed_on) AS reg_month,
+        EXTRACT(YEAR FROM indexed_on) AS reg_year,
         data ->> 'case_id' AS case_id,
         data -> 'properties' ->> 'case_name' AS case_name,
         data -> 'properties' ->> 'case_type' AS case_type,

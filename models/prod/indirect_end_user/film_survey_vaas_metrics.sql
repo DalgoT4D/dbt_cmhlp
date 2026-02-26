@@ -2,6 +2,8 @@
 WITH vaas_expanded AS (
     SELECT
         district_name,
+        screening_year,
+        screening_month,
         men_viewers,
         women_viewers,
         other_viewers,
@@ -12,6 +14,8 @@ WITH vaas_expanded AS (
 
 SELECT
     district_name,
+    screening_year,
+    screening_month,
     TRIM(individual_vaas_name) AS vaas_name,
     SUM(
         COALESCE(men_viewers, 0)
@@ -20,5 +24,5 @@ SELECT
     ) AS total_viewer_count
 FROM vaas_expanded
 WHERE TRIM(individual_vaas_name) != ''
-GROUP BY 1, 2
-ORDER BY 1, 2
+GROUP BY 1, 2, 3, 4
+ORDER BY 1, 2, 3, 4

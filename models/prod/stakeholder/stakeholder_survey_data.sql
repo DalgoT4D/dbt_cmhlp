@@ -1,6 +1,9 @@
 with cte as (
     SELECT
         {{ dbt_utils.star(from=ref('stakeholders_form_merged'), except=["data"]) }}, -- metafields
+        --data & time of registration
+        EXTRACT(MONTH FROM indexed_on) AS reg_month,
+        EXTRACT(YEAR FROM indexed_on) AS reg_year,
         COALESCE(
             NULLIF(data -> 'form' -> 'commcare_usercase' -> 'case' -> 'update' ->> 'name_of_the_stakeholder', ''), data -> 'form' -> 'stakeholder_form' ->> 'name_of_the_stakeholder'
         ) AS name_of_the_stakeholder,

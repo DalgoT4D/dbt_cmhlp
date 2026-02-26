@@ -1,5 +1,8 @@
 WITH village_data AS (
-    SELECT *
+    SELECT *,
+        --data & time of registration
+        EXTRACT(MONTH FROM indexed_on) AS reg_month,
+        EXTRACT(YEAR FROM indexed_on) AS reg_year
     FROM {{ ref('village_case_data') }}
     WHERE case_name IS NOT null AND TRIM(case_name) != ''
 ),

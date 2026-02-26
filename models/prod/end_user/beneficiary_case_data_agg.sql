@@ -7,6 +7,9 @@
 WITH cte AS (
     SELECT
         {{ dbt_utils.star(from=ref('all_case_deduped'), except=["data"]) }}, -- metafields
+        --data & time of registration
+        EXTRACT(MONTH FROM indexed_on) AS reg_month,
+        EXTRACT(YEAR FROM indexed_on) AS reg_year,
         COALESCE(
             NULLIF(data -> 'properties' ->> 'age_reg', ''),
             NULLIF(data -> 'properties' ->> 'ben_age_reg', '')

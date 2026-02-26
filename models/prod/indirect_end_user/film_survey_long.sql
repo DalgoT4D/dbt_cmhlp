@@ -7,6 +7,9 @@ WITH base_data AS (
         data -> 'form' -> 'film_screening_survey' ->> 'film_name_films' AS film_name,
         data -> 'form' -> 'film_screening_survey' ->> 'date_of_screening_films' AS date_of_screening,
         data -> 'form' -> 'film_screening_survey' ->> 'from_which_vaas_people_viewed_the_film_films' AS vaas_names,
+        --data & time of screening
+        EXTRACT(MONTH FROM indexed_on) AS screening_month,
+        EXTRACT(YEAR FROM indexed_on) AS screening_year,
         -- Add array versions for easier analysis
         STRING_TO_ARRAY(data -> 'form' -> 'film_screening_survey' ->> 'film_name_films', ' ') AS film_names_array,
         STRING_TO_ARRAY(
