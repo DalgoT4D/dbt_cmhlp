@@ -14,9 +14,9 @@ SELECT
     district_name,
     TRIM(individual_vaas_name) AS vaas_name,
     SUM(
-        COALESCE(men_viewers, 0)
-        + COALESCE(women_viewers, 0)
-        + COALESCE(other_viewers, 0)
+        COALESCE(men_viewers, 0)::BIGINT
+        + COALESCE(women_viewers, 0)::BIGINT
+        + COALESCE(other_viewers, 0)::BIGINT
     ) AS total_viewer_count
 FROM vaas_expanded
 WHERE TRIM(individual_vaas_name) != ''
